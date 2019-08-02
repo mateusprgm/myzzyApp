@@ -1,0 +1,7 @@
+{
+  "name": "socketioChat",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

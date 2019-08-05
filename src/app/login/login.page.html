@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+     Chat Devs
+    </ion-title>
+    
+  </ion-toolbar>
+
+
+      <ion-list>
+          <ion-item>
+            <ion-input type="text" value="" [(ngModel)]="name" placeholder="user name"></ion-input>
+          </ion-item>
+       </ion-list>
+       <ion-button color="dark" (click)="joinPage(name)">join as {{name}}</ion-button>
+ 
+  
+</ion-header>
+
+<ion-content>
+
+</ion-content>

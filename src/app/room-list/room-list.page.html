@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="row">
+        <ion-title>Room List | <b>User: {{name}}</b></ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-text color="medium" text-center>
+    <p>You joined the chat as <b>{{ name }}</b></p>
+  </ion-text>
+  <div *ngFor="let room of rooms">
+    <ion-button  color="dark"  (click)="joinPage(room.name)">{{room.name}}</ion-button>
+  </div>
+</ion-content>

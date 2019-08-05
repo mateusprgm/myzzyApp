@@ -1,16 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
-import { HomePage } from './home.page';
+import { IonicModule } from '@ionic/angular';
+
+import { RoomPage } from './room.page';
 
 import { SocketioServiceService } from '../providers/socketio-service/socketio-service.service';
-
 // https://socket-io-node-myzzy.herokuapp.com/
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 const config: SocketIoConfig = { url: 'http://localhost:3001/', options: {} };
+const routes: Routes = [
+  {
+    path: '',
+    component: RoomPage
+  }
+];
 
 @NgModule({
   imports: [
@@ -18,14 +24,9 @@ const config: SocketIoConfig = { url: 'http://localhost:3001/', options: {} };
     FormsModule,
     IonicModule,
     SocketIoModule.forRoot(config),
-    RouterModule.forChild([
-      {
-        path: '',
-        component: HomePage
-      }
-    ])
+    RouterModule.forChild(routes)
   ],
-  declarations: [HomePage],
+  declarations: [RoomPage],
   providers:[SocketioServiceService]
 })
-export class HomePageModule {}
+export class RoomPageModule {}

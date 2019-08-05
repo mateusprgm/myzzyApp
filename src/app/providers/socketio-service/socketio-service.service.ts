@@ -16,7 +16,9 @@ export class SocketioServiceService implements OnInit{
 
   constructor(public navCtrl: NavController, public socket: Socket, private toastCtrl: ToastController){}
   
-  ngOnInit() {}
+  ngOnInit() {
+  
+  }
 
   sendMessage(message){
     this.socket.emit('send-message', {text: message});
@@ -24,7 +26,7 @@ export class SocketioServiceService implements OnInit{
   }
 
   ionViewWillLeave(){
-    this.exitRoom();
+    this.exitServer();
   }
 
   async showToast(msg){
@@ -37,10 +39,10 @@ export class SocketioServiceService implements OnInit{
   }
 
   showWriting(){
-    this.socket.emit('send-message', {text: ""});
+    this.socket.emit('send-message-room', {text: ""});
   }
 
-  joinRoom(userName, userOn){
+  joinServer(userName, userOn){
       let count = 0;
       this.socket.connect();
 
@@ -63,22 +65,25 @@ export class SocketioServiceService implements OnInit{
           count++;
           userOn.push(count);
         }
-        
       })
-      
-    
-    
+
     return true;
   }
 
   showMessages(messages, nameuser){
     let txt:String;
+    console.log('11');
     if(!this.joined){
       this.socket.fromEvent('message').subscribe(message=>{
         console.log('New: ', message);
         messages.push(message);
-        // nameuser.push(txt);
+        console.log(messages['user']);
         if(message['msg'] == '' && this.currentUser != message['user']){
+          // let timeWriting = setTimeout(()=>{ 
+            // alert("Hello"); 
+            // clearTimeout(timeWriting);
+          // }, 3000);
+          
           txt = message['user']+ " está digitando...";
           nameuser.push(txt);
           
@@ -91,8 +96,25 @@ export class SocketioServiceService implements OnInit{
     }
   }
 
-  exitRoom(){
+  
+
+  exitServer(){
     this.socket.disconnect();
     return false;
   };
+
+
+  //Functions for Room Group
+  sendMessageRoom(room, message){
+    this.socket.emit('send-message-room', ({room:room, message:message}));
+    return "";
+  }
+
+  joinRoom(room){
+    this.socket.emit('join-room', room);
+  }
+
+  showWritingRoom(){
+    this.socket.emit('send-message-room', ({room:"", message:""}));
+  }
 }

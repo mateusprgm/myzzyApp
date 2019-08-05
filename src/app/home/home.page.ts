@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { SocketioServiceService } from '../providers/socketio-service/socketio-service.service'
+import { Router } from '@angular/router';
+import { DataService } from '../providers/data/data.service';
 
 @Component({
   selector: 'app-home',
@@ -15,10 +17,15 @@ export class HomePage {
   userWriting= [];
   userOn = [];
 
-  constructor(private chatRoom: SocketioServiceService) {}
 
-  joinRoom(name){
-    this.join = this.chatRoom.joinRoom(name, this.userOn);
+  constructor(private chatRoom: SocketioServiceService, private dataService: DataService) {}
+
+  joinPage(obj){
+    this.dataService.setData("room-list",obj);
+  }
+
+  joinServer(name){
+    this.join = this.chatRoom.joinServer(name, this.userOn);
     
     this.chatRoom.showMessages(this.messages, this.userWriting);
     
@@ -28,8 +35,8 @@ export class HomePage {
     this.message = this.chatRoom.sendMessage(message);
   }
 
-  exitRoom(){
-    this.join = this.chatRoom.exitRoom();
+  exitServer(){
+    this.join = this.chatRoom.exitServer();
   }
 
   ionViewWillLeave(){
@@ -39,5 +46,7 @@ export class HomePage {
   showWriting(){
     this.chatRoom.showWriting();
   }
+
+  
   
 }

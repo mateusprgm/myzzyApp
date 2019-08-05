@@ -1,0 +1,72 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-text color="medium" text-center>
+          <p>ON Users: {{userOn[0]}}</p>
+      </ion-text>
+      <ion-text color="medium" text-center>
+          <p>{{userWriting[0]}}</p>
+        </ion-text>
+    </ion-toolbar>
+  
+    <div *ngIf="join !== true">
+        <ion-list>
+            <ion-item>
+              <ion-input type="text" value="" [(ngModel)]="name" placeholder="user name"></ion-input>
+            </ion-item>
+         </ion-list>
+         <ion-button color="dark" (click)="joinServer(name)">join as {{name}}</ion-button>
+    </div>
+    
+  </ion-header>
+  
+  <ion-content *ngIf="join != false">
+    <ion-fab>
+      <ion-button color="dark" *ngIf="join === true" (click)="exitRoom()">Exit</ion-button>
+    </ion-fab>
+  
+    <div class="ion-padding">
+      <div>
+        <ion-grid >
+          <ion-text color="medium" text-center>
+            <p>You joined the chat as <b>{{ roomData.name }}</b></p>
+          </ion-text>
+          <div *ngFor="let message of messages">
+            <ion-row  *ngIf="message.msg !== ''">
+                <ion-col size="9" *ngIf="message.user !== roomData.name" class="message other-message">
+                    <b>{{ message.user }}</b><br>
+                    <span>{{ message.msg }}</span>
+                    <div class="time" text-right><br>{{ message.createdAt | date:'short' }}</div>
+                  </ion-col>
+              
+                  <ion-col offset="3" size="9" *ngIf="message.user === roomData.name" class="message my-message">
+                    <b>{{ message.user }}</b><br>
+                    <span>{{ message.msg }}</span>
+                    <div class="time" text-right><br>{{ message.createdAt | date:'short' }}</div>
+                  </ion-col>
+              </ion-row>
+            </div>
+          </ion-grid>  
+          
+        </div>
+    </div>
+    <div>
+      
+      
+    </div>
+  </ion-content>
+  
+  <ion-footer>
+    <ion-toolbar>
+        <ion-row align-items-center *ngIf="join === true">
+            <ion-col size="10">
+              <ion-textarea auto-grow class="message-input" (ngModelChange)="showWritingRoom()"  rows="1" [disabled]="join !== true" [(ngModel)]="message"></ion-textarea>
+            </ion-col>
+            <ion-col size="2">
+              <ion-button expand="block" fill="clear" color="primary" [disabled]="message === ''" class="msg-btn"
+                (click)="sendMessageRoom(message)">
+                <ion-icon name="ios-send" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+    </ion-toolbar>
+  </ion-footer>

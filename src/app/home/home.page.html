@@ -12,14 +12,14 @@
             <ion-input type="text" value="" [(ngModel)]="name" placeholder="user name"></ion-input>
           </ion-item>
        </ion-list>
-       <ion-button color="dark" (click)="joinRoom(name)">join as {{name}}</ion-button>
+       <ion-button color="dark" (click)="joinServer(name)">join as {{name}}</ion-button>
   </div>
   
 </ion-header>
 
 <ion-content *ngIf="join != false">
   <ion-fab>
-    <ion-button color="dark" *ngIf="join === true" (click)="exitRoom()">Exit</ion-button>
+    <ion-button color="dark" *ngIf="join === true" (click)="exitServer()">Exit</ion-button>
   </ion-fab>
 
   <div class="ion-padding">
@@ -44,12 +44,14 @@
             </ion-row>
           </div>
         </ion-grid>  
+        
       </div>
   </div>
   <div>
     {{userWriting[0]}}
   </div>
 </ion-content>
+
 <ion-footer>
   <ion-toolbar>
       <ion-row align-items-center *ngIf="join === true">

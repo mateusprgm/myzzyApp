@@ -77,7 +77,7 @@ export class SocketioServiceService implements OnInit{
       this.socket.fromEvent('message').subscribe(message=>{
         console.log('New: ', message);
         messages.push(message);
-        console.log(messages['user']);
+        console.log(messages['msg']);
         if(message['msg'] == '' && this.currentUser != message['user']){
           // let timeWriting = setTimeout(()=>{ 
             // alert("Hello"); 
@@ -114,7 +114,7 @@ export class SocketioServiceService implements OnInit{
     this.socket.emit('join-room', room);
   }
 
-  showWritingRoom(){
-    this.socket.emit('send-message-room', ({room:"", message:""}));
+  showWritingRoom(room){
+    this.socket.emit('send-message-room', ({room:room, message:""}));
   }
 }

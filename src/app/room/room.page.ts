@@ -34,8 +34,8 @@ export class RoomPage implements OnInit {
     this.join = this.chatRoom.joinServer(this.roomData.name, this.userOn);
     this.chatRoom.joinRoom(this.roomData.room);
 
-    this.chatRoom.showMessages(this.messages, this.userOn);
-    
+    this.chatRoom.showMessages(this.messages, this.userWriting);
+    console.log(this.userWriting);
   }
 
   sendMessageRoom(message){
@@ -51,16 +51,12 @@ export class RoomPage implements OnInit {
   }
     
   showWritingRoom(){
-    this.chatRoom.showWriting();
+    this.chatRoom.showWritingRoom(this.roomData.room);
   }
 
-  showMessage(){
-     this.chatRoom.showMessages(this.messages, this.userWriting);
-    
-  }
 
   exitRoom(){
-    this.join = this.chatRoom.exitServer();
+    // this.join = this.chatRoom.exitServer();
     this.dataService.setData("room-list",{});
     
   };

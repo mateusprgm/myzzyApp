@@ -42,7 +42,7 @@ export class SocketioServiceService implements OnInit{
     this.socket.emit('send-message-room', {text: ""});
   }
 
-  joinServer(userName, userOn){
+  joinServer(userName, userOn, users){
      
       this.socket.connect();
 
@@ -57,11 +57,15 @@ export class SocketioServiceService implements OnInit{
         let user = data['user'];
         if(data['event'] == 'left'){
           this.showToast(`User left: ${user}`);
+          users.length = 0;
           userOn.length = 0;
+          users.push(data['users']);
           userOn.push(data['count']);
         }else{
           this.showToast(`User joined: ${user}`);
+          users.length = 0;
           userOn.length = 0;
+          users.push(data['users']);
           userOn.push(data['count']);
         }
         console.log(userOn);

@@ -25,7 +25,7 @@ export class HomePage {
   }
 
   joinServer(name){
-    this.join = this.chatRoom.joinServer(name, this.userOn);
+    // this.join = this.chatRoom.joinServer(name, this.userOn);
     
     this.chatRoom.showMessages(this.messages, this.userWriting);
     

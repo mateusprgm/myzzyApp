@@ -5,12 +5,21 @@
       </ion-text>
       <ion-text color="medium" text-center>
           <p>{{userWriting[0]}}</p>
+          <p>{{roomData.room}}</p>
         </ion-text>
+        
     </ion-toolbar>
   </ion-header>
-  
+  <ion-text color="medium">
+    <p *ngFor="let user of users">
+      {{user}}
+    </p>
+  </ion-text>
+    
   <ion-content *ngIf="join != false">
     <ion-fab>
+      
+      <!-- <ion-button color="dark" (click)="conecta()">conecta(esquivaDefalha)</ion-button> -->
       <ion-button color="dark" *ngIf="join === true" (click)="exitRoom()">Exit</ion-button>
     </ion-fab>
   

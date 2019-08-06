@@ -18,8 +18,8 @@ export class RoomPage implements OnInit {
   join: boolean = false;
   userWriting= [];
   userOn = [];
-  
- 
+  aux: boolean = false;
+  users = [];
   
   
 
@@ -30,8 +30,13 @@ export class RoomPage implements OnInit {
 
   ngOnInit(){
     
+    this.conecta();
+  
+  }
+
+  conecta(){
     this.roomData = this.dataService.getData();
-    this.join = this.chatRoom.joinServer(this.roomData.name, this.userOn);
+    this.join = this.chatRoom.joinServer(this.roomData.name, this.userOn, this.users);
     this.chatRoom.joinRoom(this.roomData.room);
 
     this.chatRoom.showMessages(this.messages, this.userWriting);
@@ -56,9 +61,8 @@ export class RoomPage implements OnInit {
 
 
   exitRoom(){
-    // this.join = this.chatRoom.exitServer();
+    this.join = this.chatRoom.exitServer();
     this.dataService.setData("room-list",{});
-    
   };
 
  

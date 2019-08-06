@@ -43,7 +43,7 @@ export class SocketioServiceService implements OnInit{
   }
 
   joinServer(userName, userOn){
-      let count = 0;
+     
       this.socket.connect();
 
       let name = userName;
@@ -53,18 +53,18 @@ export class SocketioServiceService implements OnInit{
   
       this.socket.fromEvent('users-changed').subscribe(data =>{
         console.log(data);
-        userOn.length = 0;
+        
         let user = data['user'];
         if(data['event'] == 'left'){
           this.showToast(`User left: ${user}`);
-          count--;
-          userOn.push(count);
-          
+          userOn.length = 0;
+          userOn.push(data['count']);
         }else{
           this.showToast(`User joined: ${user}`);
-          count++;
-          userOn.push(count);
+          userOn.length = 0;
+          userOn.push(data['count']);
         }
+        console.log(userOn);
       })
 
     return true;
@@ -72,25 +72,23 @@ export class SocketioServiceService implements OnInit{
 
   showMessages(messages, nameuser){
     let txt:String;
-    console.log('11');
     if(!this.joined){
       this.socket.fromEvent('message').subscribe(message=>{
         console.log('New: ', message);
         messages.push(message);
-        console.log(messages['msg']);
         if(message['msg'] == '' && this.currentUser != message['user']){
           // let timeWriting = setTimeout(()=>{ 
             // alert("Hello"); 
             // clearTimeout(timeWriting);
           // }, 3000);
-          
+          nameuser.length = 0;
           txt = message['user']+ " está digitando...";
           nameuser.push(txt);
           
         }else{
           nameuser.length = 0;
           
-        }console.log(nameuser);
+        }
       })
       this.joined = true;
     }
@@ -112,9 +110,11 @@ export class SocketioServiceService implements OnInit{
 
   joinRoom(room){
     this.socket.emit('join-room', room);
+
   }
 
   showWritingRoom(room){
     this.socket.emit('send-message-room', ({room:room, message:""}));
   }
+
 }

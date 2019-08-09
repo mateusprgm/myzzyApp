@@ -11,6 +11,7 @@
     <p>You joined the chat as <b>{{ name }}</b></p>
   </ion-text>
   <div *ngFor="let room of rooms">
-    <ion-button  color="dark" *ngIf="room.name == 'sala1'"  (click)="joinPage(room.name)">{{room.name}}</ion-button>
+    <ion-button  color="dark"   (click)="joinPage(room.name)">{{room.name}}</ion-button>
   </div>
 </ion-content>
+<!-- *ngIf="room.name == 'sala1'" -->

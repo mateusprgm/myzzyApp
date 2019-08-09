@@ -15,13 +15,13 @@
       {{user}}
     </p>
   </ion-text>
-    
+  <ion-fab>
+    <ion-button color="dark" *ngIf="join === true" (click)="exitRoom()">Exit</ion-button>
+  </ion-fab>
+  
+
   <ion-content *ngIf="join != false">
-    <ion-fab>
-      
-      <!-- <ion-button color="dark" (click)="conecta()">conecta(esquivaDefalha)</ion-button> -->
-      <ion-button color="dark" *ngIf="join === true" (click)="exitRoom()">Exit</ion-button>
-    </ion-fab>
+    
   
     <div class="ion-padding">
       <div>

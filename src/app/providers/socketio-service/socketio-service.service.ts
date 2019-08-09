@@ -114,7 +114,10 @@ export class SocketioServiceService implements OnInit{
 
   joinRoom(room){
     this.socket.emit('join-room', room);
+  }
 
+  leaveRoom(room){
+    this.socket.emit('leave-room', room);
   }
 
   showWritingRoom(room){

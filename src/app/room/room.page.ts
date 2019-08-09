@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { DataService } from '../providers/data/data.service';
 import { SocketioServiceService } from '../providers/socketio-service/socketio-service.service';
+import { IonContent } from '@ionic/angular';
+import { Observable } from 'rxjs';
+
 
 
 @Component({
@@ -10,6 +13,8 @@ import { SocketioServiceService } from '../providers/socketio-service/socketio-s
 })
 export class RoomPage implements OnInit {
 
+  @ViewChild(IonContent, {static: false}) content: IonContent;
+  
   roomData:any;
   message: String = "";
   messages = [];
@@ -36,6 +41,7 @@ export class RoomPage implements OnInit {
     this.chatRoom.showMessages(this.messages, this.userWriting);
     console.log("oi");
     
+ 
   
   }
 
@@ -57,11 +63,15 @@ export class RoomPage implements OnInit {
     this.chatRoom.showWritingRoom(this.roomData.room);
   }
 
+  scrollToBottom(){
+    this.content.scrollToBottom(1500);
+    console.log("asda");
+  }
 
   exitRoom(){
     // this.join = this.chatRoom.exitServer();
     console.log(this.roomData.room);
-    // this.chatRoom.leaveRoom(this.roomData.room);
+    this.chatRoom.leaveRoom(this.roomData.room);
     this.dataService.setData("room-list",{});
   };
 
@@ -70,4 +80,6 @@ export class RoomPage implements OnInit {
   ionViewWillLeave(){
     // this.chatRoom.ionViewWillLeave();
   }
+
+
 }

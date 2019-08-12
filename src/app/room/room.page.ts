@@ -25,6 +25,7 @@ export class RoomPage implements OnInit {
   aux: boolean = false;
   users = [];
   powerScroll: Boolean = true;
+  onUsersRoom = [];
   
   
 
@@ -35,12 +36,12 @@ export class RoomPage implements OnInit {
 
   ngOnInit(){
     this.roomData = this.dataService.getData();
-    this.join = this.chatRoom.joinServer(this.roomData.name, this.userOn, this.users);
+    this.join = this.chatRoom.joinServer(this.roomData.name, this.userOn, this.users, this.roomData.room, this.onUsersRoom);
     this.chatRoom.joinRoom(this.roomData.room);
     this.chatRoom.joined = false;
     this.chatRoom.showMessages(this.messages, this.userWriting, this.powerScroll);
-    console.log("oi");
-    
+ 
+    console.log(this.onUsersRoom);
     this.timer().subscribe(()=>{
       if(this.powerScroll){
         this.scrollToBottom();
@@ -53,6 +54,7 @@ export class RoomPage implements OnInit {
 
 
   sendMessageRoom(message){
+    console.log(this.users);
     this.message = this.chatRoom.sendMessageRoom(this.roomData.room, message);
 
    
@@ -72,14 +74,13 @@ export class RoomPage implements OnInit {
 
   scrollToBottom(){
     this.content.scrollToBottom(800);
-    
-    console.log("asda");
   }
 
   exitRoom(){
-    // this.join = this.chatRoom.exitServer();
-    console.log(this.roomData.room);
+    
+    // console.log(this.roomData.room);
     this.chatRoom.leaveRoom(this.roomData.room);
+    // this.join = this.chatRoom.exitServer();
     this.dataService.setData("room-list",{});
   };
 

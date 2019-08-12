@@ -2,6 +2,7 @@
     <ion-toolbar>
       <ion-text color="medium" text-center>
           <p>ON Users: {{userOn[0]}}</p>
+          <p>Room Users On: {{onUsersRoom[0]}}</p>
       </ion-text>
       <ion-text color="medium" text-center>
           <p>{{userWriting[0]}}</p>
@@ -11,9 +12,9 @@
     </ion-toolbar>
   </ion-header>
   <ion-text color="medium">
-    <p *ngFor="let user of users">
-      {{user}}
-    </p>
+    <b *ngFor="let user of users[0]">
+      {{user.name}}
+    </b>
   </ion-text>
   <ion-fab>
     <ion-button color="dark" *ngIf="join === true" (click)="exitRoom()">Exit</ion-button>
@@ -23,8 +24,8 @@
   <ion-content *ngIf="join != false" [scrollEvents]="true" (touchstart)="pauseScroll()">
 
   
-    <div class="ion-padding">
-      <div>
+  <div class="ion-padding">
+    <div>
         <ion-grid >
           <ion-text color="medium" text-center>
             <p>You joined the chat as <b>{{ roomData.name }}</b></p>
@@ -32,7 +33,7 @@
           <div *ngFor="let message of messages">
             <ion-row  *ngIf="message.msg !== ''">
                 <ion-col size="9" *ngIf="message.user !== roomData.name" class="message other-message">
-                    <b>{{ message.user }}</b><br>
+                    <b>{{ message.user.name }}</b><br>
                     <span>{{ message.msg }}</span>
                     <div class="time" text-right><br>{{ message.createdAt | date:'short' }}</div>
                   </ion-col>
@@ -45,10 +46,9 @@
               </ion-row>
             </div>
           </ion-grid>  
-          
         </div>
     </div>
-    <div>
+  <div>
       
       
     </div>

@@ -13,6 +13,7 @@ export class SocketioServiceService implements OnInit{
  
   join: Boolean = false;
   joined: Boolean = false;
+  user: Object = '';
 
   constructor(public navCtrl: NavController, public socket: Socket, private toastCtrl: ToastController){}
   
@@ -30,11 +31,13 @@ export class SocketioServiceService implements OnInit{
   }
 
   async showToast(msg){
+    
     let toast = await this.toastCtrl.create({
       message:msg,
       position: 'top',
-      duration: 2000
+      duration: 1500
     })
+    toast.dismiss();
     toast.present();
   }
 
@@ -42,40 +45,62 @@ export class SocketioServiceService implements OnInit{
     this.socket.emit('send-message-room', {text: ""});
   }
 
-  joinServer(userName, userOn, users){
+  joinServer(userName, userOn, users, room, usersOnRoom){
      
       this.socket.connect();
 
       let name = userName;
       this.currentUser = name;
   
-      this.setName(name);
+      this.setName(name, room);
   
       this.socket.fromEvent('users-changed').subscribe(data =>{
-        console.log(data);
+
+        
         
         let user = data['user'];
         if(data['event'] == 'left'){
-          this.showToast(`User left: ${user}`);
-          users.length = 0;
-          userOn.length = 0;
-          users.push(data['users']);
-          userOn.push(data['count']);
-        }else{
-          this.showToast(`User joined: ${user}`);
-          users.length = 0;
-          userOn.length = 0;
-          users.push(data['users']);
-          userOn.push(data['count']);
+          if(data['user']){
+            this.showToast(`User left: ${user.name}`);
+            users.length = 0;
+            userOn.length = 0;
+            users.push(data['users']);
+            userOn.push(data['count']);
+            this.user = data['user'];
+          }
+          if(this.user['room'] == room){
+            usersOnRoom.length = 0;
+            usersOnRoom.push(data['onUsersRoom']-1);
+            console.log(usersOnRoom);
+          }
+
+          
+
+        }else if(data['event'] == 'joined'){
+          if(data['user']){
+            this.showToast(`User joined: ${user.name}`);
+            users.length = 0;
+            userOn.length = 0;
+            users.push(data['users']);
+            userOn.push(data['count']);
+            this.user = data['user'];
+          }
+          if(this.user['room'] == room){
+            usersOnRoom.length = 0;
+            usersOnRoom.push(data['onUsersRoom']);
+          }else{
+            // console.log(usersOnRoom);
+          }
         }
-        console.log(userOn);
+
       })
 
     return true;
   }
 
-  setName(name){
-    this.socket.emit('set-name', name);
+  setName(name, room){
+    this.socket.emit('set-name', ({name,room}));
+    
   }
 
   showMessages(messages, nameuser, powerScroll){
@@ -88,13 +113,11 @@ export class SocketioServiceService implements OnInit{
         
         messages.push(message);
         powerScroll = true;
+
         if(message['msg'] == '' && this.currentUser != message['user']){
-          // let timeWriting = setTimeout(()=>{ 
-            // alert("Hello"); 
-            // clearTimeout(timeWriting);
-          // }, 3000);
+
           nameuser.length = 0;
-          txt = message['user']+ " está digitando...";
+          txt = message['user'].name+ " está digitando...";
           nameuser.push(txt);
           
         }else{
@@ -110,6 +133,7 @@ export class SocketioServiceService implements OnInit{
 
   exitServer(){
     this.socket.disconnect();
+    this.joined = false;
     return false;
   };
 

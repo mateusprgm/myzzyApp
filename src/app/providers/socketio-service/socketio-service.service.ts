@@ -13,6 +13,7 @@ export class SocketioServiceService implements OnInit{
  
   join: Boolean = false;
   joined: Boolean = false;
+  leave: Boolean = false;
   user: Object = '';
 
   constructor(public navCtrl: NavController, public socket: Socket, private toastCtrl: ToastController){}
@@ -68,11 +69,27 @@ export class SocketioServiceService implements OnInit{
             userOn.push(data['count']);
             this.user = data['user'];
           }
-          if(this.user['room'] == room){
-            usersOnRoom.length = 0;
-            usersOnRoom.push(data['onUsersRoom']-1);
-            console.log(usersOnRoom);
-          }
+          
+            if(this.user['room'] == room){
+              if(!data['exited']){
+                usersOnRoom.length = 0;
+                usersOnRoom.push(data['onUsersRoom']-1);
+                console.log(usersOnRoom);
+              }else{
+                let aux = []; 
+                let count = usersOnRoom[0];
+                aux.push(count);
+                
+                usersOnRoom.length = 0;
+                console.log((aux[0]-1));
+                usersOnRoom.push((aux[0]-1));
+              }
+            }
+            
+          
+          
+          
+          
 
           
 
@@ -88,8 +105,6 @@ export class SocketioServiceService implements OnInit{
           if(this.user['room'] == room){
             usersOnRoom.length = 0;
             usersOnRoom.push(data['onUsersRoom']);
-          }else{
-            // console.log(usersOnRoom);
           }
         }
 

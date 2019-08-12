@@ -49,7 +49,7 @@ export class SocketioServiceService implements OnInit{
       let name = userName;
       this.currentUser = name;
   
-      this.socket.emit('set-name', name);
+      this.setName(name);
   
       this.socket.fromEvent('users-changed').subscribe(data =>{
         console.log(data);
@@ -74,12 +74,20 @@ export class SocketioServiceService implements OnInit{
     return true;
   }
 
-  showMessages(messages, nameuser){
+  setName(name){
+    this.socket.emit('set-name', name);
+  }
+
+  showMessages(messages, nameuser, powerScroll){
+   
     let txt:String;
     if(!this.joined){
       this.socket.fromEvent('message').subscribe(message=>{
         console.log('New: ', message);
+
+        
         messages.push(message);
+        powerScroll = true;
         if(message['msg'] == '' && this.currentUser != message['user']){
           // let timeWriting = setTimeout(()=>{ 
             // alert("Hello"); 
@@ -105,6 +113,7 @@ export class SocketioServiceService implements OnInit{
     return false;
   };
 
+  
 
   //Functions for Room Group
   sendMessageRoom(room, message){

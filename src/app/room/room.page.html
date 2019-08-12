@@ -16,14 +16,12 @@
     </p>
   </ion-text>
   <ion-fab>
-    <ion-button color="dark" (click)="scrollToBottom()">scrollBottom</ion-button>
     <ion-button color="dark" *ngIf="join === true" (click)="exitRoom()">Exit</ion-button>
   </ion-fab>
   
 
-  <ion-content *ngIf="join != false"
-  [scrollEvents]="true">
-    
+  <ion-content *ngIf="join != false" [scrollEvents]="true" (touchstart)="pauseScroll()">
+
   
     <div class="ion-padding">
       <div>

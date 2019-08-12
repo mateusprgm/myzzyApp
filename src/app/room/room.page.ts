@@ -3,8 +3,7 @@ import { DataService } from '../providers/data/data.service';
 import { SocketioServiceService } from '../providers/socketio-service/socketio-service.service';
 import { IonContent } from '@ionic/angular';
 import { Observable } from 'rxjs';
-
-
+import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
 
 @Component({
   selector: 'app-room',
@@ -25,6 +24,7 @@ export class RoomPage implements OnInit {
   userOn = [];
   aux: boolean = false;
   users = [];
+  powerScroll: Boolean = true;
   
   
 
@@ -38,10 +38,15 @@ export class RoomPage implements OnInit {
     this.join = this.chatRoom.joinServer(this.roomData.name, this.userOn, this.users);
     this.chatRoom.joinRoom(this.roomData.room);
     this.chatRoom.joined = false;
-    this.chatRoom.showMessages(this.messages, this.userWriting);
+    this.chatRoom.showMessages(this.messages, this.userWriting, this.powerScroll);
     console.log("oi");
     
- 
+    this.timer().subscribe(()=>{
+      if(this.powerScroll){
+        this.scrollToBottom();
+      }
+    })
+    
   
   }
 
@@ -57,6 +62,8 @@ export class RoomPage implements OnInit {
       user: this.roomData.name,
       createdAt: new Date()
     });
+
+    this.powerScroll = true;
   }
     
   showWritingRoom(){
@@ -64,7 +71,8 @@ export class RoomPage implements OnInit {
   }
 
   scrollToBottom(){
-    this.content.scrollToBottom(1500);
+    this.content.scrollToBottom(800);
+    
     console.log("asda");
   }
 
@@ -79,6 +87,14 @@ export class RoomPage implements OnInit {
 
   ionViewWillLeave(){
     // this.chatRoom.ionViewWillLeave();
+  }
+
+  timer(){
+    return IntervalObservable.create(200);
+  }
+
+  pauseScroll(){
+    this.powerScroll = false;
   }
 
 

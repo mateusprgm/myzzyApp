@@ -42,4 +42,8 @@ export class RoomListPage implements OnInit {
     this.dataService.setData("room",objs);
   }
 
+  // groupOnUsers(){
+  //   this.chatRoom.setName(this.name);
+  // }
+
 }

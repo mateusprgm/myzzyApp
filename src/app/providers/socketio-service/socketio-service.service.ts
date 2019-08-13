@@ -2,6 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
 import { Socket } from 'ng-socket-io';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,6 +16,7 @@ export class SocketioServiceService implements OnInit{
   joined: Boolean = false;
   leave: Boolean = false;
   user: Object = '';
+  server;
 
   constructor(public navCtrl: NavController, public socket: Socket, private toastCtrl: ToastController){}
   
@@ -54,12 +56,14 @@ export class SocketioServiceService implements OnInit{
       this.currentUser = name;
   
       this.setName(name, room);
-  
-      this.socket.fromEvent('users-changed').subscribe(data =>{
+      
+      this.server = this.socket.fromEvent('users-changed').subscribe(data =>{
 
         
         
         let user = data['user'];
+        let us = data['us'];
+
         if(data['event'] == 'left'){
           if(data['user']){
             this.showToast(`User left: ${user.name}`);
@@ -68,31 +72,25 @@ export class SocketioServiceService implements OnInit{
             users.push(data['users']);
             userOn.push(data['count']);
             this.user = data['user'];
+            
           }
           
             if(this.user['room'] == room){
               if(!data['exited']){
                 usersOnRoom.length = 0;
                 usersOnRoom.push(data['onUsersRoom']-1);
-                console.log(usersOnRoom);
+                this.showToast(`${us.name} left ${us.room}`);
               }else{
                 let aux = []; 
                 let count = usersOnRoom[0];
                 aux.push(count);
-                
                 usersOnRoom.length = 0;
-                console.log((aux[0]-1));
                 usersOnRoom.push((aux[0]-1));
+                console.log("aqui else");
               }
+            }else{
+              console.log("nada");
             }
-            
-          
-          
-          
-          
-
-          
-
         }else if(data['event'] == 'joined'){
           if(data['user']){
             this.showToast(`User joined: ${user.name}`);
@@ -107,15 +105,17 @@ export class SocketioServiceService implements OnInit{
             usersOnRoom.push(data['onUsersRoom']);
           }
         }
-
       })
 
     return true;
   }
 
+  unsubs(obs){
+    obs.unsubscribe();
+  }
+
   setName(name, room){
     this.socket.emit('set-name', ({name,room}));
-    
   }
 
   showMessages(messages, nameuser, powerScroll){

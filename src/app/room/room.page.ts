@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { DataService } from '../providers/data/data.service';
 import { SocketioServiceService } from '../providers/socketio-service/socketio-service.service';
-import { IonContent } from '@ionic/angular';
+import { IonContent, IonTextarea } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
 
@@ -13,16 +13,17 @@ import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
 export class RoomPage implements OnInit {
 
   @ViewChild(IonContent, {static: false}) content: IonContent;
+  @ViewChild(IonTextarea, {static:false}) messageArea: IonTextarea;
   
-  roomData:any;
+  roomData: any;
   message: String = "";
   messages = [];
   currentUser: String = "";
   name: String;
-  join: boolean = false;
-  userWriting= [];
+  join: Boolean = false;
+  userWriting = [];
   userOn = [];
-  aux: boolean = false;
+  aux: Boolean = false;
   users = [];
   powerScroll: Boolean = true;
   onUsersRoom = [];
@@ -36,34 +37,37 @@ export class RoomPage implements OnInit {
 
   ngOnInit(){
     this.roomData = this.dataService.getData();
-    this.join = this.chatRoom.joinServer(this.roomData.name, this.userOn, this.users, this.roomData.room, this.onUsersRoom);
+    if(this.join){
+      this.chatRoom.unsubs(this.chatRoom.server);
+    }else{
+      this.join = this.chatRoom.joinServer(this.roomData.name, this.userOn, this.users, this.roomData.room, this.onUsersRoom);
+    }
+    
+    
     this.chatRoom.joinRoom(this.roomData.room);
     this.chatRoom.joined = false;
     this.chatRoom.showMessages(this.messages, this.userWriting, this.powerScroll);
- 
-    console.log(this.onUsersRoom);
+
     this.timer().subscribe(()=>{
       if(this.powerScroll){
         this.scrollToBottom();
       }
     })
-    
   
   }
 
 
 
   sendMessageRoom(message){
-    console.log(this.users);
     this.message = this.chatRoom.sendMessageRoom(this.roomData.room, message);
 
-   
-   
     this.messages.push({ 
       msg:message,
       user: this.roomData.name,
       createdAt: new Date()
     });
+
+    this.focusElement(this.messageArea);
 
     this.powerScroll = true;
   }
@@ -77,8 +81,6 @@ export class RoomPage implements OnInit {
   }
 
   exitRoom(){
-    
-    // console.log(this.roomData.room);
     this.chatRoom.leaveRoom(this.roomData.room);
     // this.join = this.chatRoom.exitServer();
     this.dataService.setData("room-list",{});
@@ -98,5 +100,9 @@ export class RoomPage implements OnInit {
     this.powerScroll = false;
   }
 
+  focusElement(element){
+    element.setFocus();
+    
+  }
 
 }

@@ -30,7 +30,10 @@
           <ion-text color="medium" text-center>
             <p>You joined the chat as <b>{{ roomData.name }}</b></p>
           </ion-text>
+          
           <div *ngFor="let message of messages">
+              <img src="message.img" alt="" *ngIf="message.img">
+              {{message.img}}
             <ion-row  *ngIf="message.msg !== ''">
                 <ion-col size="9" *ngIf="message.user !== roomData.name" class="message other-message">
                     <b>{{ message.user.name }}</b><br>
@@ -49,7 +52,7 @@
         </div>
     </div>
   <div>
-      
+     
       
     </div>
   </ion-content>

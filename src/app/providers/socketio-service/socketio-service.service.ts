@@ -155,8 +155,8 @@ export class SocketioServiceService implements OnInit{
   
 
   //Functions for Room Group
-  sendMessageRoom(room, message){
-    this.socket.emit('send-message-room', ({room:room, message:message}));
+  sendMessageRoom(room, message, type){
+    this.socket.emit('send-message-room', ({room:room, message:message, type:type}));
     return "";
   }
 

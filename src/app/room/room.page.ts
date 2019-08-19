@@ -29,6 +29,7 @@ export class RoomPage implements OnInit {
   users = [];
   powerScroll: Boolean = true;
   onUsersRoom = [];
+  unicode = [];
   
   
 
@@ -39,7 +40,7 @@ export class RoomPage implements OnInit {
               private dataService: DataService,
               private base64: Base64,
               private filePath: FilePath,
-              private fileChooser: FileChooser) {}
+              private fileChooser: FileChooser,) {}
 
   ngOnInit(){
     this.roomData = this.dataService.getData();
@@ -65,7 +66,7 @@ export class RoomPage implements OnInit {
 
 
   sendMessageRoom(message){
-    this.message = this.chatRoom.sendMessageRoom(this.roomData.room, message);
+    this.message = this.chatRoom.sendMessageRoom(this.roomData.room, message, "txt");
 
     this.messages.push({ 
       msg:message,
@@ -112,13 +113,19 @@ export class RoomPage implements OnInit {
 
   //anexo
   toBase64(){
+    
     this.fileChooser.open().then((fileuri)=>{
       this.filePath.resolveNativePath(fileuri).then((nativepath)=>{
         this.base64.encodeFile(nativepath).then((base64string)=>{
+          // alert(base64string);
+          
           alert(base64string);
+          this.chatRoom.sendMessageRoom(this.roomData.room, base64string, "img");
+          
         })
       })
     })
+    
   }
 
 }

@@ -57,14 +57,18 @@
   <ion-footer>
     <ion-toolbar>
         <ion-row align-items-center *ngIf="join === true">
-            <ion-col size="10">
+            <ion-col size="8">
               <ion-textarea auto-grow id="messageArea" class="message-input" (ngModelChange)="showWritingRoom()"  rows="1" [disabled]="join !== true" [(ngModel)]="message"></ion-textarea>
+            </ion-col>
+            <ion-col size="2">
+              <ion-button color="dark" (click)="toBase64()">A</ion-button>
             </ion-col>
             <ion-col size="2">
               <ion-button expand="block" fill="clear" color="primary" [disabled]="message === ''" class="msg-btn"
                 (click)="sendMessageRoom(message)">
                 <ion-icon name="ios-send" slot="icon-only"></ion-icon>
               </ion-button>
+              
             </ion-col>
           </ion-row>
     </ion-toolbar>

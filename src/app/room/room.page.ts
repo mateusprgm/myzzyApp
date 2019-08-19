@@ -2,8 +2,10 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { DataService } from '../providers/data/data.service';
 import { SocketioServiceService } from '../providers/socketio-service/socketio-service.service';
 import { IonContent, IonTextarea } from '@ionic/angular';
-import { Observable } from 'rxjs';
 import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
+import { FileChooser } from '@ionic-native/file-chooser/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
+import { Base64 } from '@ionic-native/base64/ngx';
 
 @Component({
   selector: 'app-room',
@@ -33,7 +35,11 @@ export class RoomPage implements OnInit {
  
   
   
-  constructor(private chatRoom: SocketioServiceService, private dataService: DataService) {}
+  constructor(private chatRoom: SocketioServiceService, 
+              private dataService: DataService,
+              private base64: Base64,
+              private filePath: FilePath,
+              private fileChooser: FileChooser) {}
 
   ngOnInit(){
     this.roomData = this.dataService.getData();
@@ -102,7 +108,17 @@ export class RoomPage implements OnInit {
 
   focusElement(element){
     element.setFocus();
-    
+  }
+
+  //anexo
+  toBase64(){
+    this.fileChooser.open().then((fileuri)=>{
+      this.filePath.resolveNativePath(fileuri).then((nativepath)=>{
+        this.base64.encodeFile(nativepath).then((base64string)=>{
+          alert(base64string);
+        })
+      })
+    })
   }
 
 }

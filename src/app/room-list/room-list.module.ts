@@ -11,7 +11,7 @@ import { SocketioServiceService } from '../providers/socketio-service/socketio-s
 
 // https://socket-io-node-myzzy.herokuapp.com/
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
-const config: SocketIoConfig = { url: 'http://localhost:3001/', options: {} };
+const config: SocketIoConfig = { url: 'https://socket-io-node-myzzy.herokuapp.com/', options: {} };
 const routes: Routes = [
   {
     path: '',

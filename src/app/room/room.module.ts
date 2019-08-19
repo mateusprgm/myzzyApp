@@ -10,7 +10,14 @@ import { RoomPage } from './room.page';
 import { SocketioServiceService } from '../providers/socketio-service/socketio-service.service';
 // https://socket-io-node-myzzy.herokuapp.com/
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
-const config: SocketIoConfig = { url: 'http://localhost:3001/', options: {} };
+
+import { Base64 } from '@ionic-native/base64/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
+import { FileChooser } from '@ionic-native/file-chooser/ngx';
+
+
+
+const config: SocketIoConfig = { url: 'https://socket-io-node-myzzy.herokuapp.com/', options: {} };
 const routes: Routes = [
   {
     path: '',
@@ -27,6 +34,10 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [RoomPage],
-  providers:[SocketioServiceService]
+  providers:[SocketioServiceService,
+    Base64,
+    FilePath,
+    FileChooser
+  ]
 })
 export class RoomPageModule {}

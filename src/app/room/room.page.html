@@ -30,23 +30,27 @@
           <ion-text color="medium" text-center>
             <p>You joined the chat as <b>{{ roomData.name }}</b></p>
           </ion-text>
-          
-          <div *ngFor="let message of messages">
-              <img src="message.img" alt="" *ngIf="message.img">
-              {{message.img}}
-            <ion-row  *ngIf="message.msg !== ''">
+          <div id="source"></div>
+          <div *ngFor="let message of messages" >
+              
+              
+            <ion-row  *ngIf="message.msg !== ''" >
+                
                 <ion-col size="9" *ngIf="message.user !== roomData.name" class="message other-message">
                     <b>{{ message.user.name }}</b><br>
                     <span>{{ message.msg }}</span>
+                    <div id="source"></div>
                     <div class="time" text-right><br>{{ message.createdAt | date:'short' }}</div>
                   </ion-col>
               
                   <ion-col offset="3" size="9" *ngIf="message.user === roomData.name" class="message my-message">
                     <b>{{ message.user }}</b><br>
                     <span>{{ message.msg }}</span>
+                    <div id="source"></div>
                     <div class="time" text-right><br>{{ message.createdAt | date:'short' }}</div>
                   </ion-col>
               </ion-row>
+              
             </div>
           </ion-grid>  
         </div>

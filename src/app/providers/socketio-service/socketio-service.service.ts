@@ -1,6 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
 import { Socket } from 'ng-socket-io';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -119,29 +120,34 @@ export class SocketioServiceService implements OnInit{
   }
 
   showMessages(messages, nameuser, powerScroll){
-   
+    let obs: Observable<any>;
     let txt:String;
     if(!this.joined){
-      this.socket.fromEvent('message').subscribe(message=>{
+        this.socket.fromEvent('message').subscribe(message=>{
         console.log('New: ', message);
 
         
+        
         messages.push(message);
         powerScroll = true;
+        if(message['msg']){
+          if(message['msg'] == '' && this.currentUser != message['user']){
 
-        if(message['msg'] == '' && this.currentUser != message['user']){
-
-          nameuser.length = 0;
-          txt = message['user'].name+ " está digitando...";
-          nameuser.push(txt);
-          
-        }else{
-          nameuser.length = 0;
-          
+            nameuser.length = 0;
+            txt = message['user'].name+ " está digitando...";
+            nameuser.push(txt);
+            
+          }else{
+            nameuser.length = 0;
+            
+          }
         }
+        
       })
+      
       this.joined = true;
     }
+    
   }
 
   
@@ -171,5 +177,7 @@ export class SocketioServiceService implements OnInit{
   showWritingRoom(room){
     this.socket.emit('send-message-room', ({room:room, message:""}));
   }
+
+  
 
 }

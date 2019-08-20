@@ -6,6 +6,7 @@ import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-room',
@@ -30,6 +31,7 @@ export class RoomPage implements OnInit {
   powerScroll: Boolean = true;
   onUsersRoom = [];
   unicode = [];
+  divImage: String = "sourceImage";
   
   
 
@@ -43,6 +45,7 @@ export class RoomPage implements OnInit {
               private fileChooser: FileChooser,) {}
 
   ngOnInit(){
+    
     this.roomData = this.dataService.getData();
     if(this.join){
       this.chatRoom.unsubs(this.chatRoom.server);
@@ -51,9 +54,18 @@ export class RoomPage implements OnInit {
     }
     
     
+    
     this.chatRoom.joinRoom(this.roomData.room);
     this.chatRoom.joined = false;
     this.chatRoom.showMessages(this.messages, this.userWriting, this.powerScroll);
+    
+    
+    
+    
+      
+   
+    this.renderImage64();
+     
 
     this.timer().subscribe(()=>{
       if(this.powerScroll){
@@ -63,7 +75,7 @@ export class RoomPage implements OnInit {
   
   }
 
-
+ 
 
   sendMessageRoom(message){
     this.message = this.chatRoom.sendMessageRoom(this.roomData.room, message, "txt");
@@ -77,6 +89,9 @@ export class RoomPage implements OnInit {
     this.focusElement(this.messageArea);
 
     this.powerScroll = true;
+
+    
+
   }
     
   showWritingRoom(){
@@ -114,18 +129,62 @@ export class RoomPage implements OnInit {
   //anexo
   toBase64(){
     
-    this.fileChooser.open().then((fileuri)=>{
-      this.filePath.resolveNativePath(fileuri).then((nativepath)=>{
-        this.base64.encodeFile(nativepath).then((base64string)=>{
-          // alert(base64string);
-          
-          alert(base64string);
-          this.chatRoom.sendMessageRoom(this.roomData.room, base64string, "img");
-          
+    return function base64(){
+      this.fileChooser.open().then((fileuri)=>{
+        this.filePath.resolveNativePath(fileuri).then((nativepath)=>{
+          this.base64.encodeFile(nativepath).then((base64string)=>{
+  
+            this.chatRoom.sendMessageRoom(this.roomData.room, base64string, "img");
+            
+          })
         })
       })
-    })
+    } 
+    
+
+    
     
   }
+
+   renderImage64(){
+   
+    
+    
+     
+        
+        let count = 0;
+        this.chatRoom.socket.fromEvent('message').subscribe(msg=>{
+
+          var at = msg['createdAt'];
+
+          if(msg['img']!=undefined){
+            var span = document.createElement("span");
+            span.setAttribute("id", `${at}`);
+            span.style.display = "none";
+
+            document.body.appendChild(span);
+            var image = new Image();
+            image.src = msg['img'];
+
+            document.getElementById(`source`).appendChild(image);
+          }
+          count++;
+          console.log(msg);
+          if(count >= 1){
+
+          }
+          //  this.messagesObs().unsubscribe();      
+
+
+        })
+       
+        
+      };
+      
+   
+
+  
+
+  
 
 }

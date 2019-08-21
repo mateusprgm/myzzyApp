@@ -135,6 +135,21 @@ export class RoomPage implements OnInit {
           this.base64.encodeFile(nativepath).then((base64string)=>{
   
             this.chatRoom.sendMessageRoom(this.roomData.room, base64string, "img");
+            this.messages.push({ 
+              img:base64string,
+              user: this.roomData.name,
+              createdAt: new Date()
+            });
+            var at = new Date();
+            var span = document.createElement("span");
+            span.setAttribute("id", `${at}`);
+            span.style.display = "none";
+
+            document.body.appendChild(span);
+            var image = new Image();
+            image.src = base64string;
+
+            document.getElementById(`source`).appendChild(image);
             
           })
         })

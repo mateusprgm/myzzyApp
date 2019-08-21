@@ -120,7 +120,7 @@ export class SocketioServiceService implements OnInit{
   }
 
   showMessages(messages, nameuser, powerScroll){
-    let obs: Observable<any>;
+    
     let txt:String;
     if(!this.joined){
         this.socket.fromEvent('message').subscribe(message=>{
@@ -130,7 +130,7 @@ export class SocketioServiceService implements OnInit{
         
         messages.push(message);
         powerScroll = true;
-        if(message['msg']){
+        if(message['msg'] != undefined){
           if(message['msg'] == '' && this.currentUser != message['user']){
 
             nameuser.length = 0;

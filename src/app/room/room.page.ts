@@ -128,8 +128,8 @@ export class RoomPage implements OnInit {
 
   //anexo
   toBase64(){
+    console.log("1");
     
-    return function base64(){
       this.fileChooser.open().then((fileuri)=>{
         this.filePath.resolveNativePath(fileuri).then((nativepath)=>{
           this.base64.encodeFile(nativepath).then((base64string)=>{
@@ -139,11 +139,7 @@ export class RoomPage implements OnInit {
           })
         })
       })
-    } 
-    
 
-    
-    
   }
 
    renderImage64(){

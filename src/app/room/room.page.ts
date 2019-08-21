@@ -158,44 +158,43 @@ export class RoomPage implements OnInit {
   }
 
    renderImage64(){
-   
-    
-    
-     
-        
-        let count = 0;
-        this.chatRoom.socket.fromEvent('message').subscribe(msg=>{
 
-          var at = msg['createdAt'];
-
-          if(msg['img']!=undefined){
-            var span = document.createElement("span");
-            span.setAttribute("id", `${at}`);
-            span.style.display = "none";
-
-            document.body.appendChild(span);
-            var image = new Image();
-            image.src = msg['img'];
-
-            document.getElementById(`source`).appendChild(image);
-          }
-          count++;
-          console.log(msg);
-          if(count >= 1){
-
-          }
-          //  this.messagesObs().unsubscribe();      
-
-
-        })
-       
-        
-      };
+    let count = 0;
+    this.chatRoom.socket.fromEvent('message').subscribe(msg=>{
       
-   
+      var at = msg['createdAt'];
 
+      if(msg['img']!=undefined){
+        var span = document.createElement("span");
+        span.setAttribute("id", `${at}`);
+        span.style.display = "none";
+        let loaded: Boolean = false;
+
+        let timer = this.timer().subscribe(()=>{
+          if(loaded == false){
+            if(document.getElementById(`source${at}`)){
+              console.log('loaded');
+              loaded = true;
+
+              document.body.appendChild(span);
+              var image = new Image();
+              image.src = msg['img'];
+
+              document.getElementById(`source${at}`).appendChild(image);
+              timer.unsubscribe();
+            }
+          }
+          
+          
+        })
+        
+      }
+      count++;
+      console.log(msg);
+      if(count >= 1){
+
+      }
   
-
-  
-
+    })   
+  };
 }

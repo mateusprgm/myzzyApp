@@ -30,7 +30,7 @@
           <ion-text color="medium" text-center>
             <p>You joined the chat as <b>{{ roomData.name }}</b></p>
           </ion-text>
-          <div id="source"></div>
+
           <div *ngFor="let message of messages" >
               
               
@@ -38,15 +38,15 @@
                 
                 <ion-col size="9" *ngIf="message.user !== roomData.name" class="message other-message">
                     <b>{{ message.user.name }}</b><br>
-                    <span>{{ message.msg }}</span>
-                    <div id="source"></div>
+                    <span>{{ message.msg }}</span><Br>
+                    <div id="source{{ message.createdAt}}"></div>
                     <div class="time" text-right><br>{{ message.createdAt | date:'short' }}</div>
                   </ion-col>
               
                   <ion-col offset="3" size="9" *ngIf="message.user === roomData.name" class="message my-message">
                     <b>{{ message.user }}</b><br>
-                    <span>{{ message.msg }}</span>
-                    <div id="source"></div>
+                    <span>{{ message.msg }}</span><Br>
+                    <div id="source{{ message.createdAt}}"></div>
                     <div class="time" text-right><br>{{ message.createdAt | date:'short' }}</div>
                   </ion-col>
               </ion-row>

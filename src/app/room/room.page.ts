@@ -144,12 +144,28 @@ export class RoomPage implements OnInit {
             var span = document.createElement("span");
             span.setAttribute("id", `${at}`);
             span.style.display = "none";
+            let loaded: Boolean = false;
 
-            document.body.appendChild(span);
-            var image = new Image();
-            image.src = base64string;
 
-            document.getElementById(`source`).appendChild(image);
+            let timer = this.timer().subscribe(()=>{
+              if(loaded == false){
+                if(document.getElementById(`source${at}`)){
+                  console.log('loaded');
+                  loaded = true;
+    
+                  document.body.appendChild(span);
+                  var image = new Image();
+                  image.src = base64string;
+    
+                  document.getElementById(`source${at}`).appendChild(image);
+                  timer.unsubscribe();
+                }
+              }
+              
+              
+            })
+
+         
             
           })
         })
@@ -189,11 +205,7 @@ export class RoomPage implements OnInit {
         })
         
       }
-      count++;
-      console.log(msg);
-      if(count >= 1){
-
-      }
+      
   
     })   
   };

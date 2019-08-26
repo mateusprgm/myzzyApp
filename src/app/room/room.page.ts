@@ -244,7 +244,30 @@ export class RoomPage implements OnInit {
           createdAt: new Date()
         });
 
-        
+        var at = new Date();
+        var span = document.createElement("span");
+        span.setAttribute("id", `${at}`);
+        span.style.display = "none";
+        let loaded: Boolean = false;
+
+
+        let timer = this.timer().subscribe(()=>{
+          if(loaded == false){
+            if(document.getElementById(`source${at}`)){
+              console.log('loaded');
+              loaded = true;
+
+              document.body.appendChild(span);
+              var image = new Image();
+              image.src = base64data;
+
+              document.getElementById(`source${at}`).appendChild(image);
+              timer.unsubscribe();
+            }
+          }
+          
+          
+        })
         
       })
     })

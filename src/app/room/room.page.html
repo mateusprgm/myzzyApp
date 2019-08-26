@@ -16,15 +16,13 @@
       {{user.name}}
     </b>
   </ion-text>
-  <ion-fab>
-    <ion-button color="dark" *ngIf="join === true" (click)="exitRoom()">Exit</ion-button>
-  </ion-fab>
-  
+
 
   <ion-content *ngIf="join != false" [scrollEvents]="true" (touchstart)="pauseScroll()">
+     
 
-  
   <div class="ion-padding">
+      
     <div>
         <ion-grid >
           <ion-text color="medium" text-center>
@@ -67,16 +65,22 @@
             <ion-col size="8">
               <ion-textarea auto-grow id="messageArea" class="message-input" (ngModelChange)="showWritingRoom()"  rows="1" [disabled]="join !== true" [(ngModel)]="message"></ion-textarea>
             </ion-col>
-            <ion-col size="2">
-              <ion-button color="dark" (click)="toBase64()">A</ion-button>
+            <ion-col size="1">
+                <ion-button color="dark" fill="clear"  class="msg-btn"
+                  (click)="takePhoto()">
+                  <ion-icon name="camera"></ion-icon>
+                </ion-button>
+              </ion-col>
+            <ion-col size="1">
+                <ion-button size="small" color="dark" fill="clear" (click)="toBase64()"><ion-icon name="attach"></ion-icon></ion-button>
             </ion-col>
             <ion-col size="2">
-              <ion-button expand="block" fill="clear" color="primary" [disabled]="message === ''" class="msg-btn"
-                (click)="sendMessageRoom(message)">
-                <ion-icon name="ios-send" slot="icon-only"></ion-icon>
-              </ion-button>
+                <ion-fab-button fill="clear" color="primary" [disabled]="message === ''" class="msg-btn"
+                  (click)="sendMessageRoom(message)" size="small" color="success"><ion-icon name="send"></ion-icon>
+                </ion-fab-button>
+            </ion-col>
               
-            </ion-col>
+                
           </ion-row>
     </ion-toolbar>
   </ion-footer>

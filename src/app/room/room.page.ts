@@ -6,14 +6,20 @@ import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
-import { Observable } from 'rxjs';
+
+
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { File } from '@ionic-native/file/ngx';
+
 
 @Component({
   selector: 'app-room',
   templateUrl: './room.page.html',
   styleUrls: ['./room.page.scss'],
 })
+
 export class RoomPage implements OnInit {
+  
 
   @ViewChild(IonContent, {static: false}) content: IonContent;
   @ViewChild(IonTextarea, {static:false}) messageArea: IonTextarea;
@@ -34,6 +40,7 @@ export class RoomPage implements OnInit {
   divImage: String = "sourceImage";
   
   
+  
 
  
   
@@ -42,7 +49,10 @@ export class RoomPage implements OnInit {
               private dataService: DataService,
               private base64: Base64,
               private filePath: FilePath,
-              private fileChooser: FileChooser,) {}
+              private fileChooser: FileChooser,
+              private camera: Camera, 
+              private file: File
+              ) {}
 
   ngOnInit(){
     
@@ -99,7 +109,7 @@ export class RoomPage implements OnInit {
   }
 
   scrollToBottom(){
-    this.content.scrollToBottom(800);
+    this.content.scrollToBottom(0);
   }
 
   exitRoom(){
@@ -111,6 +121,7 @@ export class RoomPage implements OnInit {
  
 
   ionViewWillLeave(){
+    this.chatRoom.leaveRoom(this.roomData.room);
     // this.chatRoom.ionViewWillLeave();
   }
 
@@ -175,7 +186,7 @@ export class RoomPage implements OnInit {
 
    renderImage64(){
 
-    let count = 0;
+    
     this.chatRoom.socket.fromEvent('message').subscribe(msg=>{
       
       var at = msg['createdAt'];
@@ -209,4 +220,35 @@ export class RoomPage implements OnInit {
   
     })   
   };
+
+  goCamera(){
+    this.dataService.setData("camera",{});
+  }
+
+
+  takePhoto(){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
+    this.camera.getPicture(options).then((imageData) => {
+      let filename = imageData.substring(imageData.lastIndexOf('/')+1);
+      let path = imageData.substring(0, imageData.lastIndexOf('/')+1);
+      this.file.readAsDataURL(path, filename).then((base64data)=>{
+        this.chatRoom.sendMessageRoom(this.roomData.room, base64data, "img");
+        this.messages.push({ 
+          img:base64data,
+          user: this.roomData.name,
+          createdAt: new Date()
+        });
+
+        
+        
+      })
+    })
+   }
+  
+
 }

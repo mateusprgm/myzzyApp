@@ -17,6 +17,8 @@ import { FileChooser } from '@ionic-native/file-chooser/ngx';
 
 
 
+
+
 const config: SocketIoConfig = { url: 'https://socket-io-node-myzzy.herokuapp.com/', options: {} };
 const routes: Routes = [
   {
@@ -25,19 +27,27 @@ const routes: Routes = [
   }
 ];
 
+import { Camera } from '@ionic-native/camera/ngx';
+import { File } from '@ionic-native/file/ngx';
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     SocketIoModule.forRoot(config),
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
   ],
   declarations: [RoomPage],
-  providers:[SocketioServiceService,
+  providers:[
+    File,
+    Camera,
+    SocketioServiceService,
     Base64,
     FilePath,
-    FileChooser
+    FileChooser,
+    
   ]
 })
 export class RoomPageModule {}

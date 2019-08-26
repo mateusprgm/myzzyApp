@@ -26,7 +26,7 @@ const routes: Routes = [
   ],
   declarations: [LoginPage],
   providers:[
-    
+  
   ]
   
 })

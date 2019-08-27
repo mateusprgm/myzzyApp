@@ -33,4 +33,21 @@
 .msg-btn {
   --padding-start: 0.5em;
   --padding-end: 0.5em;
+  
+}
+
+.attach{
+  left: 59%;
+  position: fixed;
+  z-index: 9999;
+  bottom: 19%;
+}
+.camera{
+  left: 69%;
+  position: fixed;
+  z-index: 9999;
+  bottom: 11%;
+}
+.send{
+  padding: 0;
 }

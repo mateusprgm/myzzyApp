@@ -139,7 +139,7 @@ export class RoomPage implements OnInit {
 
   //anexo
   toBase64(){
-    console.log("1");
+
     
       this.fileChooser.open().then((fileuri)=>{
         this.filePath.resolveNativePath(fileuri).then((nativepath)=>{
@@ -180,6 +180,8 @@ export class RoomPage implements OnInit {
             
           })
         })
+      }, (err)=>{
+        alert(err);
       })
 
   }
@@ -242,6 +244,8 @@ export class RoomPage implements OnInit {
           img:base64data,
           user: this.roomData.name,
           createdAt: new Date()
+        }, (err)=>{
+          alert(err);
         });
 
         var at = new Date();
@@ -267,9 +271,13 @@ export class RoomPage implements OnInit {
           }
           
           
+        }, (err)=>{
+          alert(err);
         })
         
       })
+    }, (err)=>{
+      alert(err);
     })
    }
   

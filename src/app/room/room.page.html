@@ -66,8 +66,7 @@
               <ion-textarea auto-grow id="messageArea" class="message-input" (ngModelChange)="showWritingRoom()"  rows="1" [disabled]="join !== true" [(ngModel)]="message"></ion-textarea>
             </ion-col>
            
-                <ion-button color="dark" fill="clear"  class="msg-btn camera"
-                  (click)="takePhoto()">
+                <ion-button color="dark" fill="clear"  class="msg-btn camera" (click)="takePhoto()">
                   <ion-icon name="camera"></ion-icon>
                 </ion-button>
            

@@ -139,52 +139,50 @@ export class RoomPage implements OnInit {
 
   //anexo
   toBase64(){
+    this.fileChooser.open().then((fileuri)=>{
+      this.filePath.resolveNativePath(fileuri).then((nativepath)=>{
+        this.base64.encodeFile(nativepath).then((base64string)=>{
 
-    
-      this.fileChooser.open().then((fileuri)=>{
-        this.filePath.resolveNativePath(fileuri).then((nativepath)=>{
-          this.base64.encodeFile(nativepath).then((base64string)=>{
-  
-            this.chatRoom.sendMessageRoom(this.roomData.room, base64string, "img");
-            this.messages.push({ 
-              img:base64string,
-              user: this.roomData.name,
-              createdAt: new Date()
-            });
-            var at = new Date();
-            var span = document.createElement("span");
-            span.setAttribute("id", `${at}`);
-            span.style.display = "none";
-            let loaded: Boolean = false;
+          this.chatRoom.sendMessageRoom(this.roomData.room, base64string, "img");
+          this.messages.push({ 
+            img:base64string,
+            user: this.roomData.name,
+            createdAt: new Date()
+          });
+          let at = new Date();
+          let span = document.createElement("span");
+          span.setAttribute("id", `${at}`);
+          span.style.display = "none";
+          let loaded: Boolean = false;
 
 
-            let timer = this.timer().subscribe(()=>{
-              if(loaded == false){
-                if(document.getElementById(`source${at}`)){
-                  console.log('loaded');
-                  loaded = true;
-    
-                  document.body.appendChild(span);
-                  var image = new Image();
-                  image.src = base64string;
-    
-                  document.getElementById(`source${at}`).appendChild(image);
-                  timer.unsubscribe();
-                }
+          let timer = this.timer().subscribe(()=>{
+            if(loaded == false){
+              if(document.getElementById(`source${at}`)){
+                console.log('loaded');
+                loaded = true;
+
+                document.body.appendChild(span);
+                var image = new Image();
+                image.src = base64string;
+
+                document.getElementById(`source${at}`).appendChild(image);
+                timer.unsubscribe();
               }
-              
-              
-            })
-
-         
+            }
+            
             
           })
-        })
-      }, (err)=>{
-        alert(err);
-      })
 
-  }
+        
+          
+        })
+      })
+    }, (err)=>{
+      alert(err);
+    })
+
+    }
 
    renderImage64(){
 
@@ -206,7 +204,7 @@ export class RoomPage implements OnInit {
               loaded = true;
 
               document.body.appendChild(span);
-              var image = new Image();
+              let image = new Image();
               image.src = msg['img'];
 
               document.getElementById(`source${at}`).appendChild(image);
@@ -228,7 +226,7 @@ export class RoomPage implements OnInit {
   }
 
 
-  takePhoto(){
+   takePhoto(){
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
@@ -239,41 +237,40 @@ export class RoomPage implements OnInit {
       let filename = imageData.substring(imageData.lastIndexOf('/')+1);
       let path = imageData.substring(0, imageData.lastIndexOf('/')+1);
       this.file.readAsDataURL(path, filename).then((base64data)=>{
+        
         this.chatRoom.sendMessageRoom(this.roomData.room, base64data, "img");
-        this.messages.push({ 
-          img:base64data,
-          user: this.roomData.name,
-          createdAt: new Date()
-        }, (err)=>{
-          alert(err);
-        });
-
-        var at = new Date();
-        var span = document.createElement("span");
-        span.setAttribute("id", `${at}`);
-        span.style.display = "none";
-        let loaded: Boolean = false;
+          this.messages.push({ 
+            img:base64data,
+            user: this.roomData.name,
+            createdAt: new Date()
+          });
+          let at = new Date();
+          let span = document.createElement("span");
+          span.setAttribute("id", `${at}`);
+          span.style.display = "none";
+          let loaded: Boolean = false;
 
 
-        let timer = this.timer().subscribe(()=>{
-          if(loaded == false){
-            if(document.getElementById(`source${at}`)){
-              console.log('loaded');
-              loaded = true;
+          let timer = this.timer().subscribe(()=>{
+            console.log(loaded);
+            if(loaded == false){
+              if(document.getElementById(`source${at}`)){
+                console.log('loaded');
+                loaded = true;
 
-              document.body.appendChild(span);
-              var image = new Image();
-              image.src = base64data;
+                document.body.appendChild(span);
+                let image = new Image();
+                image.src = base64data;
 
-              document.getElementById(`source${at}`).appendChild(image);
-              timer.unsubscribe();
+                document.getElementById(`source${at}`).appendChild(image);
+                timer.unsubscribe();
+              }
             }
-          }
-          
-          
-        }, (err)=>{
-          alert(err);
-        })
+            
+            
+          })
+
+        
         
       })
     }, (err)=>{

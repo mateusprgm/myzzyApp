@@ -8,12 +8,12 @@
 }
   
 .my-message {
-  background: var(--ion-color-tertiary);
+  background-color: #228b22;
   color: #fff;
 }
   
 .other-message {
-  background: var(--ion-color-secondary);
+  background-color: #696969;
   color: #fff;
 }
   
@@ -28,6 +28,8 @@
   border: 1px solid var(--ion-color-medium);
   border-radius: 10px;
   background: #fff;
+  z-index: 0;
+  margin-left: 12%;
 }
   
 .msg-btn {
@@ -37,15 +39,15 @@
 }
 
 .attach{
-  left: 59%;
-  position: fixed;
-  z-index: 9999;
+  left: 20%;
+  position: relative;
+  // z-index: 9999;
   bottom: 19%;
 }
 .camera{
-  left: 69%;
-  position: fixed;
-  z-index: 9999;
+  left: -134%;
+  position: relative;
+  // z-index: 9999;
   bottom: 11%;
 }
 .send{

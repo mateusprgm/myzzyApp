@@ -163,7 +163,7 @@ export class RoomPage implements OnInit {
                 loaded = true;
 
                 document.body.appendChild(span);
-                var image = new Image();
+                let image = new Image();
                 image.src = base64string;
 
                 document.getElementById(`source${at}`).appendChild(image);
@@ -189,10 +189,10 @@ export class RoomPage implements OnInit {
     
     this.chatRoom.socket.fromEvent('message').subscribe(msg=>{
       
-      var at = msg['createdAt'];
+      let at = msg['createdAt'];
 
       if(msg['img']!=undefined){
-        var span = document.createElement("span");
+        let span = document.createElement("span");
         span.setAttribute("id", `${at}`);
         span.style.display = "none";
         let loaded: Boolean = false;

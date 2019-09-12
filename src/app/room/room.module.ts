@@ -29,6 +29,7 @@ const routes: Routes = [
 
 import { Camera } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 
 
 @NgModule({
@@ -47,7 +48,7 @@ import { File } from '@ionic-native/file/ngx';
     Base64,
     FilePath,
     FileChooser,
-    
+    PhotoViewer
   ]
 })
 export class RoomPageModule {}

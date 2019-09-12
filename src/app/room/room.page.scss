@@ -13,7 +13,11 @@
 }
   
 .other-message {
+<<<<<<< HEAD
   background-color: #696969;
+=======
+  background-color: #797171;
+>>>>>>> d5dd1d029dfff211fa83ca318bd865dc5766629e
   color: #fff;
 }
   
@@ -39,6 +43,7 @@
 }
 
 .attach{
+<<<<<<< HEAD
   left: 20%;
   position: relative;
   // z-index: 9999;
@@ -48,8 +53,23 @@
   left: -134%;
   position: relative;
   // z-index: 9999;
+=======
+  left: -45%;
+  position: relative;
+  z-index: 9999;
+  bottom: 19%;
+}
+.camera{
+  left: -42%;
+  position: relative;
+  z-index: 9999;
+>>>>>>> d5dd1d029dfff211fa83ca318bd865dc5766629e
   bottom: 11%;
 }
 .send{
   padding: 0;
+}
+.list{
+  margin-bottom: -13px;
+  margin-top: -13px;
 }

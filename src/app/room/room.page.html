@@ -1,20 +1,22 @@
 <ion-header>
     <ion-toolbar>
       <ion-text color="medium" text-center>
-          <p>ON Users: {{userOn[0]}}</p>
-          <p>Room Users On: {{onUsersRoom[0]}}</p>
+          <p>ON Users: <b>{{userOn[0]}}</b> | Room Users On: <b>{{onUsersRoom[0]}}</b> | <b>{{roomData.room}}</b></p>
+          <p></p>
       </ion-text>
       <ion-text color="medium" text-center>
-          <p>{{userWriting[0]}}</p>
-          <p>{{roomData.room}}</p>
-        </ion-text>
+        
+      </ion-text>
         
     </ion-toolbar>
   </ion-header>
-  <ion-text color="medium">
-    <b *ngFor="let user of users[0]">
-      {{user.name}}
-    </b>
+  <ion-text color="medium" class="list">
+    <p>
+      {{userWriting[0]}}
+      <b *ngFor="let user of users[0]">
+        {{user.name}}
+      </b>
+    </p>
   </ion-text>
 
 
@@ -62,17 +64,22 @@
   <ion-footer>
     <ion-toolbar>
         <ion-row align-items-center *ngIf="join === true">
-            <ion-col size="10">
-              <ion-textarea auto-grow id="messageArea" class="message-input" (ngModelChange)="showWritingRoom()"  rows="1" [disabled]="join !== true" [(ngModel)]="message"></ion-textarea>
-            </ion-col>
-           
-                <ion-button color="dark" fill="clear"  class="msg-btn camera" (click)="takePhoto()">
-                  <ion-icon name="camera"></ion-icon>
-                </ion-button>
-           
+            <ion-col size="1">
                 <ion-button size="small" color="dark" fill="clear" (click)="toBase64()" class="attach">
                   <ion-icon name="attach"></ion-icon>
                 </ion-button>
+            </ion-col>
+            <ion-col size="8">
+              <ion-textarea auto-grow id="messageArea" class="message-input" (ngModelChange)="showWritingRoom()"  rows="1" [disabled]="join !== true" [(ngModel)]="message"></ion-textarea>
+            </ion-col>
+            <ion-col size="1">
+                <ion-button color="dark" fill="clear"  class="msg-btn camera" (click)="takePhoto()">
+                  <ion-icon name="camera"></ion-icon>
+                </ion-button>
+            </ion-col>
+            
+           
+                
            
             <ion-col size="2" class="send">
                

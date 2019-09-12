@@ -8,12 +8,12 @@
 }
   
 .my-message {
-  background: var(--ion-color-tertiary);
+  background-color: #228b22;
   color: #fff;
 }
   
 .other-message {
-  background: var(--ion-color-secondary);
+  background-color: #797171;
   color: #fff;
 }
   
@@ -37,17 +37,21 @@
 }
 
 .attach{
-  left: 59%;
-  position: fixed;
+  left: -45%;
+  position: relative;
   z-index: 9999;
   bottom: 19%;
 }
 .camera{
-  left: 69%;
-  position: fixed;
+  left: -42%;
+  position: relative;
   z-index: 9999;
   bottom: 11%;
 }
 .send{
   padding: 0;
+}
+.list{
+  margin-bottom: -13px;
+  margin-top: -13px;
 }

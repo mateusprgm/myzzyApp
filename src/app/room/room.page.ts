@@ -12,6 +12,9 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 
+import { Storage } from '@ionic/storage';
+
+const STORAGE_KEY = 'IMAGE_LIST';
 @Component({
   selector: 'app-room',
   templateUrl: './room.page.html',
@@ -37,6 +40,9 @@ export class RoomPage implements OnInit {
   onUsersRoom = [];
   unicode = [];
   divImage: String = "sourceImage";
+
+  //
+  storedImages = [];
   
   
   
@@ -51,8 +57,17 @@ export class RoomPage implements OnInit {
               private fileChooser: FileChooser,
               private camera: Camera, 
               private file: File,
-              private photoViewer: PhotoViewer
-              ) {}
+              private photoViewer: PhotoViewer,
+              private storage: Storage
+              ) {
+                this.storage.ready().then(()=>{
+                  this.storage.get(STORAGE_KEY).then(data=>{
+                    if(data !== null){
+                      this.storedImages = data;
+                    }
+                  })
+                })
+              }
 
   
   
@@ -174,6 +189,12 @@ export class RoomPage implements OnInit {
                 let image = new Image();
                 image.src = base64string;
 
+
+                let view = this.photoViewer;
+                image.addEventListener("click", () => {
+                  view.show(base64string);
+                }); 
+
                 document.getElementById(`source${at}`).appendChild(image);
                 timer.unsubscribe();
               }
@@ -219,23 +240,33 @@ export class RoomPage implements OnInit {
               let image = new Image();
               image.src = msg['img'];
 
+              let nameImg = at+'.png';
+              let path = this.file.dataDirectory;
+              
+              // this.file.writeFile(path, nameImg, msg['img']).then(r=>{
+                //this.sto
+              // });
+
+              // function storeImage(imageName){
+              //   let saveObj = { img:imageName };
+              //   this.store
+              // }
+              
               
               let view = this.photoViewer;
-              image.addEventListener("click", function(){
-                view.show(msg['img']);
+              image.addEventListener("click", () => {
+                alert(msg['img'].split(',')[1]);
+                view.show(msg['img'].split(',')[1]);
               }); 
+
+
               
               document.getElementById(`source${at}`).appendChild(image);
               timer.unsubscribe();
             }
           }
-          
-          
         })
-        
       }
-      
-  
     })   
   };
 
@@ -249,7 +280,8 @@ export class RoomPage implements OnInit {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
+      mediaType: this.camera.MediaType.PICTURE,
+
     }
     this.camera.getPicture(options).then((imageData) => {
       let filename = imageData.substring(imageData.lastIndexOf('/')+1);

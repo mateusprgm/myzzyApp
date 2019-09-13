@@ -42,7 +42,7 @@
                 <ion-col size="9" *ngIf="message.user !== roomData.name" class="message other-message">
                     <b>{{ message.user.name }}</b><br>
                     <span>{{ message.msg }}</span><Br>
-                    <div id="source{{ message.createdAt}}"></div>
+                    <div id="source{{ message.createdAt}}" (click)="teste();"></div>
                     <div class="time" text-right><br>{{ message.createdAt | date:'short' }}</div>
                   </ion-col>
               

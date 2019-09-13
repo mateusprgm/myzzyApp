@@ -124,34 +124,30 @@ export class SocketioServiceService implements OnInit{
   showMessages(messages, nameuser, powerScroll){
     
     let txt:String;  
-      try {
-        this.aux.unsubscribe();
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      this.aux.unsubscribe();
+    } catch (error) {
+      console.log(error);
+    }
         
-        this.aux = this.socket.fromEvent('message').subscribe(message=>{
+    this.aux = this.socket.fromEvent('message').subscribe(message=>{
 
-        console.log('New: ', message);
+      console.log('New: ', message);
 
-        
-        
-        messages.push(message);
-        powerScroll = true;
-        if(message['msg'] != undefined){
-          if(message['msg'] == '' && this.currentUser != message['user']){
+      messages.push(message);
+      powerScroll = true;
+      if(message['msg'] != undefined){
+        if(message['msg'] == '' && this.currentUser != message['user']){
 
-            nameuser.length = 0;
-            txt = message['user'].name+ " está digitando...";
-            nameuser.push(txt);
-            
-          }else{
-            nameuser.length = 0;
-            
-          }
+          nameuser.length = 0;
+          txt = message['user'].name+ " está digitando...";
+          nameuser.push(txt);
+          
+        }else{
+          nameuser.length = 0;
         }
-        
-      })
+      }
+    })
   }
 
   

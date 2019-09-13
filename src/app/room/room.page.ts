@@ -41,8 +41,7 @@ export class RoomPage implements OnInit {
   unicode = [];
   divImage: String = "sourceImage";
 
-  //
-  storedImages = [];
+  
   
   
   
@@ -59,15 +58,7 @@ export class RoomPage implements OnInit {
               private file: File,
               private photoViewer: PhotoViewer,
               private storage: Storage
-              ) {
-                this.storage.ready().then(()=>{
-                  this.storage.get(STORAGE_KEY).then(data=>{
-                    if(data !== null){
-                      this.storedImages = data;
-                    }
-                  })
-                })
-              }
+              ) { }
 
   
   
@@ -255,8 +246,7 @@ export class RoomPage implements OnInit {
               
               let view = this.photoViewer;
               image.addEventListener("click", () => {
-                alert(msg['img'].split(',')[1]);
-                view.show(msg['img'].split(',')[1]);
+                view.show(msg['img']);
               }); 
 
 
@@ -277,11 +267,10 @@ export class RoomPage implements OnInit {
 
   takePhoto(){
     const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      quality: 75,
+      destinationType: this.camera.DestinationType.NATIVE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
-
     }
     this.camera.getPicture(options).then((imageData) => {
       let filename = imageData.substring(imageData.lastIndexOf('/')+1);
@@ -311,6 +300,16 @@ export class RoomPage implements OnInit {
                 document.body.appendChild(span);
                 let image = new Image();
                 image.src = base64data;
+
+                let view = this.photoViewer;
+
+                /*data:image/*;charset=utf-8;base64,....Funciona 
+                  data:image/jpeg;base64,....
+                */
+
+                image.addEventListener("click", () => {
+                  view.show(base64data);
+                }); 
 
                 document.getElementById(`source${at}`).appendChild(image);
                 timer.unsubscribe();

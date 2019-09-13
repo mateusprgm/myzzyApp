@@ -54,9 +54,7 @@ export class RoomPage implements OnInit {
               private photoViewer: PhotoViewer
               ) {}
 
-  photoView(image){
-    this.photoViewer.show(image);
-  }
+  
   
 
   ngOnInit(){
@@ -221,11 +219,11 @@ export class RoomPage implements OnInit {
               let image = new Image();
               image.src = msg['img'];
 
-              // function viewPhoto(){
-                // this.photoView(msg['img']);
-              // }
-
-              // image.addEventListener("click", function(){viewPhoto();}); 
+              
+              let view = this.photoViewer;
+              image.addEventListener("click", function(){
+                view.show(msg['img']);
+              }); 
               
               document.getElementById(`source${at}`).appendChild(image);
               timer.unsubscribe();
@@ -247,55 +245,55 @@ export class RoomPage implements OnInit {
 
 
   takePhoto(){
-  const options: CameraOptions = {
-    quality: 100,
-    destinationType: this.camera.DestinationType.FILE_URI,
-    encodingType: this.camera.EncodingType.JPEG,
-    mediaType: this.camera.MediaType.PICTURE
-  }
-  this.camera.getPicture(options).then((imageData) => {
-    let filename = imageData.substring(imageData.lastIndexOf('/')+1);
-    let path = imageData.substring(0, imageData.lastIndexOf('/')+1);
-    this.file.readAsDataURL(path, filename).then((base64data)=>{
-      
-      this.chatRoom.sendMessageRoom(this.roomData.room, base64data, "img");
-        this.messages.push({ 
-          img:base64data,
-          user: this.roomData.name,
-          createdAt: new Date()
-        });
-        let at = new Date();
-        let span = document.createElement("span");
-        span.setAttribute("id", `${at}`);
-        span.style.display = "none";
-        let loaded: Boolean = false;
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
+    this.camera.getPicture(options).then((imageData) => {
+      let filename = imageData.substring(imageData.lastIndexOf('/')+1);
+      let path = imageData.substring(0, imageData.lastIndexOf('/')+1);
+      this.file.readAsDataURL(path, filename).then((base64data)=>{
+        
+        this.chatRoom.sendMessageRoom(this.roomData.room, base64data, "img");
+          this.messages.push({ 
+            img:base64data,
+            user: this.roomData.name,
+            createdAt: new Date()
+          });
+          let at = new Date();
+          let span = document.createElement("span");
+          span.setAttribute("id", `${at}`);
+          span.style.display = "none";
+          let loaded: Boolean = false;
 
 
-        let timer = this.timer().subscribe(()=>{
-          console.log(loaded);
-          if(loaded == false){
-            if(document.getElementById(`source${at}`)){
-              console.log('loaded');
-              loaded = true;
+          let timer = this.timer().subscribe(()=>{
+            console.log(loaded);
+            if(loaded == false){
+              if(document.getElementById(`source${at}`)){
+                console.log('loaded');
+                loaded = true;
 
-              document.body.appendChild(span);
-              let image = new Image();
-              image.src = base64data;
+                document.body.appendChild(span);
+                let image = new Image();
+                image.src = base64data;
 
-              document.getElementById(`source${at}`).appendChild(image);
-              timer.unsubscribe();
+                document.getElementById(`source${at}`).appendChild(image);
+                timer.unsubscribe();
+              }
             }
-          }
-          
-          
-        })
+            
+            
+          })
 
-      
-      
+        
+        
+      })
+    }, (err)=>{
+      alert(err);
     })
-  }, (err)=>{
-    alert(err);
-  })
   }
 
   

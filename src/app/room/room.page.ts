@@ -32,7 +32,6 @@ export class RoomPage implements OnInit {
   join: Boolean = false;
   userWriting = [];
   userOn = [];
-  aux: Boolean = false;
   users = [];
   powerScroll: Boolean = true;
   onUsersRoom = [];
@@ -65,15 +64,20 @@ export class RoomPage implements OnInit {
     this.roomData = this.dataService.getData();
     if(this.join){
       this.chatRoom.unsubs(this.chatRoom.server);
+      this.renderImage64();
     }else{
       this.join = this.chatRoom.joinServer(this.roomData.name, this.userOn, this.users, this.roomData.room, this.onUsersRoom);
+     
     }
     
     
     
     this.chatRoom.joinRoom(this.roomData.room);
     this.chatRoom.joined = false;
+    
     this.chatRoom.showMessages(this.messages, this.userWriting, this.powerScroll);
+    
+    
     
     
     
@@ -191,9 +195,13 @@ export class RoomPage implements OnInit {
     }
 
    renderImage64(){
-
+    try {
+      this.chatRoom.auxRender.unsubscribe();
+    } catch (error) {
+      console.log(error);
+    }
     
-    this.chatRoom.socket.fromEvent('message').subscribe(msg=>{
+    this.chatRoom.auxRender =  this.chatRoom.socket.fromEvent('message').subscribe(msg=>{
       
       let at = msg['createdAt'];
 

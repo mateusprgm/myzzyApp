@@ -18,6 +18,8 @@ export class SocketioServiceService implements OnInit{
   leave: Boolean = false;
   user: Object = '';
   server;
+  aux:any;
+  auxRender:any;
 
   constructor(public navCtrl: NavController, public socket: Socket, private toastCtrl: ToastController){}
   
@@ -121,9 +123,15 @@ export class SocketioServiceService implements OnInit{
 
   showMessages(messages, nameuser, powerScroll){
     
-    let txt:String;
-    if(!this.joined){
-        this.socket.fromEvent('message').subscribe(message=>{
+    let txt:String;  
+      try {
+        this.aux.unsubscribe();
+      } catch (error) {
+        console.log(error);
+      }
+        
+        this.aux = this.socket.fromEvent('message').subscribe(message=>{
+
         console.log('New: ', message);
 
         
@@ -144,17 +152,12 @@ export class SocketioServiceService implements OnInit{
         }
         
       })
-      
-      this.joined = true;
-    }
-    
   }
 
   
 
   exitServer(){
     this.socket.disconnect();
-    this.joined = false;
     return false;
   };
 

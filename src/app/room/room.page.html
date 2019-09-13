@@ -1,20 +1,14 @@
 <ion-header>
     <ion-toolbar>
       <ion-text color="medium" text-center>
-<<<<<<< HEAD
-          <p>ON Users: {{userOn[0]}} | Room Users On: {{onUsersRoom[0]}}</p>
-      </ion-text>
-      <ion-text color="medium" text-center>
-          <p><b>{{roomData.room}}</b> {{userWriting[0]}}</p>
-        </ion-text>
-=======
+
           <p>ON Users: <b>{{userOn[0]}}</b> | Room Users On: <b>{{onUsersRoom[0]}}</b> | <b>{{roomData.room}}</b></p>
           <p></p>
       </ion-text>
       <ion-text color="medium" text-center>
         
       </ion-text>
->>>>>>> d5dd1d029dfff211fa83ca318bd865dc5766629e
+
         
     </ion-toolbar>
   </ion-header>
@@ -77,23 +71,6 @@
                 <ion-button size="small" color="dark" fill="clear" (click)="toBase64()" class="attach">
                   <ion-icon name="attach"></ion-icon>
                 </ion-button>
-<<<<<<< HEAD
-              </ion-col>
-
-            <ion-col size="8">
-              <ion-textarea auto-grow id="messageArea" class="message-input" (ngModelChange)="showWritingRoom()"  rows="1" [disabled]="join !== true" [(ngModel)]="message"></ion-textarea>
-            </ion-col>
-
-            
-
-            <ion-col size="1">
-              <ion-button color="dark" fill="clear"  class="msg-btn camera" (click)="takePhoto()">
-                <ion-icon name="camera"></ion-icon>
-              </ion-button>
-            </ion-col>
-           
-
-=======
             </ion-col>
             <ion-col size="8">
               <ion-textarea auto-grow id="messageArea" class="message-input" (ngModelChange)="showWritingRoom()"  rows="1" [disabled]="join !== true" [(ngModel)]="message"></ion-textarea>
@@ -103,7 +80,6 @@
                   <ion-icon name="camera"></ion-icon>
                 </ion-button>
             </ion-col>
->>>>>>> d5dd1d029dfff211fa83ca318bd865dc5766629e
             
            
                 

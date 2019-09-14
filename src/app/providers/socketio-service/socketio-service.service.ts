@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
 import { Socket } from 'ng-socket-io';
-import { Observable } from 'rxjs';
+
 
 
 @Injectable({
@@ -124,11 +124,11 @@ export class SocketioServiceService implements OnInit{
   showMessages(messages, nameuser, powerScroll){
     
     let txt:String;  
-    try {
+
+    if(this.aux != undefined){
       this.aux.unsubscribe();
-    } catch (error) {
-      console.log(error);
     }
+    
         
     this.aux = this.socket.fromEvent('message').subscribe(message=>{
 

@@ -65,6 +65,15 @@
   </ion-content>
   
   <ion-footer>
+      <ion-button size="small" color="dark"  (click)="captureAudio()" >captureAudio </ion-button>
+           <ion-button size="small" color="dark"  (click)="captureVideo()" >captureVideo </ion-button>
+         <!-- <ion-list>
+            <ion-item *ngFor="let file of mediaFiles">
+              {{file.name}}
+              <p>{{file.size / 1000 / 1000 | number}} MB</p>
+            </ion-item>
+          </ion-list> -->
+          <!-- <video controls autoplay #myvideo></video> -->
     <ion-toolbar>
         <ion-row align-items-center *ngIf="join === true">
             <ion-col size="1">

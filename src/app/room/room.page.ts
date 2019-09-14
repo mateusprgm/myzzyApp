@@ -11,6 +11,7 @@ import { Base64 } from '@ionic-native/base64/ngx';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
+import { MediaCapture, MediaFile } from '@ionic-native/media-capture/ngx';
 
 
 
@@ -26,6 +27,7 @@ export class RoomPage implements OnInit {
 
   @ViewChild(IonContent, {static: false}) content: IonContent;
   @ViewChild(IonTextarea, {static:false}) messageArea: IonTextarea;
+  @ViewChild('myvideo',{static:false}) myVideo: any;
   
   roomData: any;
   message: String = "";
@@ -57,6 +59,7 @@ export class RoomPage implements OnInit {
               private camera: Camera, 
               private file: File,
               private photoViewer: PhotoViewer,
+              private mediaCapture: MediaCapture
               ) { }
 
   
@@ -154,47 +157,11 @@ export class RoomPage implements OnInit {
   toBase64(){
     this.fileChooser.open().then((fileuri)=>{
       this.filePath.resolveNativePath(fileuri).then((nativepath)=>{
-        this.base64.encodeFile(nativepath).then((base64string)=>{
+        this.base64.encodeFile(nativepath).then((base64data)=>{
 
-          this.chatRoom.sendMessageRoom(this.roomData.room, base64string, "img");
-          this.messages.push({ 
-            img:base64string,
-            user: this.roomData.name,
-            createdAt: new Date()
-          });
-          let at = new Date();
-          let span = document.createElement("span");
-          span.setAttribute("id", `${at}`);
-          span.style.display = "none";
-          let loaded: Boolean = false;
+          this.sendDataList(base64data);
+          this.createViewImage(base64data, new Date());
 
-
-          let timer = this.timer().subscribe(()=>{
-            if(loaded == false){
-              if(document.getElementById(`source${at}`)){
-                console.log('loaded');
-                loaded = true;
-
-                document.body.appendChild(span);
-                let image = new Image();
-                image.src = base64string;
-
-
-                let view = this.photoViewer;
-                image.addEventListener("click", () => {
-                  view.show(base64string);
-                }); 
-
-                document.getElementById(`source${at}`).appendChild(image);
-                timer.unsubscribe();
-              }
-            }
-            
-            
-          })
-
-        
-          
         })
       })
     }, (err)=>{
@@ -204,10 +171,9 @@ export class RoomPage implements OnInit {
     }
 
    renderImage64(){
-    try {
+    
+    if(this.chatRoom.auxRender != undefined){
       this.chatRoom.auxRender.unsubscribe();
-    } catch (error) {
-      console.log(error);
     }
     
     this.chatRoom.auxRender =  this.chatRoom.socket.fromEvent('message').subscribe(msg=>{
@@ -215,46 +181,7 @@ export class RoomPage implements OnInit {
       let at = msg['createdAt'];
 
       if(msg['img']!=undefined){
-        let span = document.createElement("span");
-        span.setAttribute("id", `${at}`);
-        span.style.display = "none";
-        let loaded: Boolean = false;
-
-        let timer = this.timer().subscribe(()=>{
-          if(loaded == false){
-            if(document.getElementById(`source${at}`)){
-              console.log('loaded');
-              loaded = true;
-
-              document.body.appendChild(span);
-              let image = new Image();
-              image.src = msg['img'];
-
-              let nameImg = at+'.png';
-              let path = this.file.dataDirectory;
-              
-              // this.file.writeFile(path, nameImg, msg['img']).then(r=>{
-                //this.sto
-              // });
-
-              // function storeImage(imageName){
-              //   let saveObj = { img:imageName };
-              //   this.store
-              // }
-              
-              
-              let view = this.photoViewer;
-              image.addEventListener("click", () => {
-                view.show(msg['img']);
-              }); 
-
-
-              
-              document.getElementById(`source${at}`).appendChild(image);
-              timer.unsubscribe();
-            }
-          }
-        })
+        this.createViewImage(msg['img'], at);
       }
     })   
   };
@@ -275,60 +202,70 @@ export class RoomPage implements OnInit {
       let filename = imageData.substring(imageData.lastIndexOf('/')+1);
       let path = imageData.substring(0, imageData.lastIndexOf('/')+1);
       this.file.readAsDataURL(path, filename).then((base64data)=>{
-        
-        this.chatRoom.sendMessageRoom(this.roomData.room, base64data, "img");
-          this.messages.push({ 
-            img:base64data,
-            user: this.roomData.name,
-            createdAt: new Date()
-          });
-          let at = new Date();
-          let span = document.createElement("span");
-          span.setAttribute("id", `${at}`);
-          span.style.display = "none";
-          let loaded: Boolean = false;
+      
+      this.sendDataList(base64data);
+      this.createViewImage(base64data, new Date());
 
-
-          let timer = this.timer().subscribe(()=>{
-            console.log(loaded);
-            if(loaded == false){
-              if(document.getElementById(`source${at}`)){
-                console.log('loaded');
-                loaded = true;
-
-                document.body.appendChild(span);
-                let image = new Image();
-                image.src = base64data;
-
-                let view = this.photoViewer;
-
-                /*data:image/*;charset=utf-8;base64,....Funciona 
-                  data:image/jpeg;base64,....
-                */
-
-                image.addEventListener("click", () => {
-                  view.show(base64data);
-                }); 
-
-                document.getElementById(`source${at}`).appendChild(image);
-                timer.unsubscribe();
-              }
-            }
-            
-            
-          })
-
-        
-        
       })
     }, (err)=>{
       alert(err);
     })
   }
 
-  
-  //https://upload.wikimedia.org/wikipedia/pt/0/06/Super-Mario-World.jpg
+  createViewImage(base64data, at){
+    
+    let span = document.createElement("span");
+    span.setAttribute("id", `${at}`);
+    span.style.display = "none";
+    let loaded: Boolean = false;
+
+    let timer = this.timer().subscribe(()=>{
+      if(loaded == false){
+        if(document.getElementById(`source${at}`)){
+          console.log('loaded');
+          loaded = true;
+
+          document.body.appendChild(span);
+          let image = new Image();
+          image.src = base64data;
 
 
+          let view = this.photoViewer;
+          image.addEventListener("click", () => {
+            view.show(base64data);
+          }); 
+
+          document.getElementById(`source${at}`).appendChild(image);
+          timer.unsubscribe();
+        }
+      }
+      
+      
+    })
+  }
+
+  sendDataList(base64data){
+    this.chatRoom.sendMessageRoom(this.roomData.room, base64data, "img");
+    this.messages.push({ 
+      img:base64data,
+      user: this.roomData.name,
+      createdAt: new Date()
+    });
+  }
+
+  //captureAUD/VID
+
+  captureAudio(){
+    this.mediaCapture.captureAudio().then((e)=>{
+      alert(e);
+    }, (err)=>{
+      // alert(JSON.stringify(err));
+    })
+  }
+  captureVideo(){
+    this.mediaCapture.captureVideo().then((e)=>{
+      alert(e);
+    })
+  }
 
 }

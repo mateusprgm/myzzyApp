@@ -12,9 +12,9 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 
-import { Storage } from '@ionic/storage';
 
-const STORAGE_KEY = 'IMAGE_LIST';
+
+
 @Component({
   selector: 'app-room',
   templateUrl: './room.page.html',
@@ -57,7 +57,6 @@ export class RoomPage implements OnInit {
               private camera: Camera, 
               private file: File,
               private photoViewer: PhotoViewer,
-              private storage: Storage
               ) { }
 
   

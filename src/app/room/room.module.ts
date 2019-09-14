@@ -30,8 +30,7 @@ const routes: Routes = [
 import { Camera } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
-//storage
-import { IonicStorageModule } from '@ionic/storage';
+
 
 
 @NgModule({
@@ -41,7 +40,7 @@ import { IonicStorageModule } from '@ionic/storage';
     IonicModule,
     SocketIoModule.forRoot(config),
     RouterModule.forChild(routes),
-    IonicStorageModule.forRoot()
+
   ],
   declarations: [RoomPage],
   providers:[
